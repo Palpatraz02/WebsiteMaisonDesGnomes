@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  php-env:
+    build:
+      context: .  
+      dockerfile: Dockerfile 
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - 9000:80
+    depends_on:
+      - mysql_db
+  mysql_db:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_USER: maisonde
+      MYSQL_PASSWORD: Chassan10@
+      MYSQL_ROOT_PASSWORD: Chassan10@ 
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - 9001:80
+    environment:
+      PMA_ARBITRARY: 1  
+    depends_on:
+      - mysql_db
